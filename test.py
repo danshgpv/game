@@ -9,38 +9,38 @@ SCREEN_HEIGHT = 900
 MOVEMENT_SPEED = 6
 
 
-class Player(arcade.Sprite):
+# class Player(arcade.Sprite):
 
-    def __init__(self):
-        super().__init__()
+#     def __init__(self):
+#         super().__init__()
 
-        # Load a left facing texture and a right facing texture.
-        # mirrored=True will mirror the image we load.
-        self.texture_left = arcade.load_texture("images/char01.png", mirrored=True, scale=SPRITE_SCALING)
-        self.texture_right = arcade.load_texture("images/char01.png", scale=SPRITE_SCALING)
+#         # Load a left facing texture and a right facing texture.
+#         # mirrored=True will mirror the image we load.
+#         self.texture_left = arcade.load_texture("images/char01.png", mirrored=True, scale=SPRITE_SCALING)
+#         self.texture_right = arcade.load_texture("images/char01.png", scale=SPRITE_SCALING)
 
-        # By default, face right.
-        self.texture = self.texture_right
+#         # By default, face right.
+#         self.texture = self.texture_right
 
-    def update(self):
-        self.center_x += self.change_x
-        self.center_y += self.change_y
+#     def update(self):
+#         self.center_x += self.change_x
+#         self.center_y += self.change_y
 
-        # Figure out if we should face left or right
-        if self.change_x < 0:
-            self.texture = self.texture_left
-        if self.change_x > 0:
-            self.texture = self.texture_right
+#         # Figure out if we should face left or right
+#         if self.change_x < 0:
+#             self.texture = self.texture_left
+#         if self.change_x > 0:
+#             self.texture = self.texture_right
 
-        if self.left < 0:
-            self.left = 0
-        elif self.right > SCREEN_WIDTH - 1:
-            self.right = SCREEN_WIDTH - 1
+#         if self.left < 0:
+#             self.left = 0
+#         elif self.right > SCREEN_WIDTH - 1:
+#             self.right = SCREEN_WIDTH - 1
 
-        if self.bottom < 0:
-            self.bottom = 0
-        elif self.top > SCREEN_HEIGHT - 1:
-            self.top = SCREEN_HEIGHT - 1
+#         if self.bottom < 0:
+#             self.bottom = 0
+#         elif self.top > SCREEN_HEIGHT - 1:
+#             self.top = SCREEN_HEIGHT - 1
 
 
 class MyGame(arcade.Window):
@@ -68,17 +68,11 @@ class MyGame(arcade.Window):
 
         # Set up the player info
         self.player_sprite = None
-        self.score = 0
-
-        # Set the background color
-        # arcade.set_background_color(arcade.color.AMAZON)
 
         self.background = None
 
     def setup(self):
         """ Set up the game and initialize the variables. """
-        self.score = 0
-        self.player_sprite = arcade.AnimatedWalkingSprite()
 
         self.background = arcade.load_texture("images/background.jpg")
 
@@ -86,8 +80,7 @@ class MyGame(arcade.Window):
         self.all_sprites_list = arcade.SpriteList()
 
         # Set up the player
-        self.score = 0
-        self.player_sprite = Player()
+        self.player_sprite = arcade.AnimatedWalkingSprite()
         self.player_sprite.center_x = SCREEN_WIDTH / 2
         self.player_sprite.center_y = SCREEN_HEIGHT - 600
         self.all_sprites_list.append(self.player_sprite)
@@ -99,11 +92,18 @@ class MyGame(arcade.Window):
         self.player_sprite.stand_left_textures.append(arcade.load_texture("images/char01.png", scale=SPRITE_SCALING, mirrored=True))
         self.player_sprite.stand_left_textures.append(arcade.load_texture("images/char02.png", scale=SPRITE_SCALING, mirrored=True))
 
+        self.player_sprite.stand_right_textures = []
+        self.player_sprite.stand_right_textures.append(arcade.load_texture("images/char01.png", scale=SPRITE_SCALING))
+        self.player_sprite.stand_right_textures.append(arcade.load_texture("images/char02.png", scale=SPRITE_SCALING))
 
         # Walk
         self.player_sprite.walk_right_textures = []
         self.player_sprite.walk_right_textures.append(arcade.load_texture("images/char01.png", scale=SPRITE_SCALING))
         self.player_sprite.walk_right_textures.append(arcade.load_texture("images/char02.png", scale=SPRITE_SCALING))
+
+        self.player_sprite.walk_left_textures = []
+        self.player_sprite.walk_left_textures.append(arcade.load_texture("images/char01.png", scale=SPRITE_SCALING, mirrored=True))
+        self.player_sprite.walk_left_textures.append(arcade.load_texture("images/char02.png", scale=SPRITE_SCALING, mirrored=True))
 
     def on_draw(self):
         """
@@ -123,6 +123,7 @@ class MyGame(arcade.Window):
         # Call update on all sprites (The sprites don't do much in this
         # example though.)
         self.all_sprites_list.update()
+        self.all_sprites_list.update_animation()
 
     def on_key_press(self, key, modifiers):
 
