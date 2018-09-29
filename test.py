@@ -88,8 +88,6 @@ class MyGame(arcade.Window):
         # Set up the player
         self.score = 0
         self.player_sprite = Player()
-        # self.player_sprite.center_x = 50
-        # self.player_sprite.center_y = 50
         self.player_sprite.center_x = SCREEN_WIDTH / 2
         self.player_sprite.center_y = SCREEN_HEIGHT - 600
         self.all_sprites_list.append(self.player_sprite)
